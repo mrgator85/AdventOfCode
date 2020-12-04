@@ -1,7 +1,6 @@
 import re
-## validates that required fields are present
-### doc is a dictionary of field : values
-### returns boolean
+
+## Dictionary of lambda expressions to validate each field
 rules = { 'byr' : lambda x : int(x) >= 1920 and int(x) <= 2002,
           'iyr' : lambda x : int(x) >= 2010 and int(x) <= 2020,
           'eyr' : lambda x : int(x) >= 2020 and int(x) <= 2030,
@@ -53,7 +52,7 @@ with open('input.txt', 'r') as f:
             for p in [x.strip() for x in l.split(' ')]:
                 k, v = p.split(':')
                 doc[k.strip()] = v.strip()
-    # validate the final passport
+    # validate the final passport (I hate this)
     if(validate2(doc)):
         validCount = validCount + 1
     print(f"There are {validCount} valid IDs.")
