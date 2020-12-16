@@ -5,7 +5,6 @@ def parseFile(f):
     ## This is lazy
     with open(f, 'r') as fi:
         lines = fi.readlines()
-        print(lines)
         #find end of rules
         ir = lines.index('your ticket:\n')
         im = ir + 1 #line iwth my ticket
@@ -17,9 +16,6 @@ def parseFile(f):
         myTicket = [int(n) for n in lines[im].strip().split(',')]
         for l in lines[it:]:
             nearby.append([int(n) for n in l.strip().split(',')])
-        print(fields)
-        print(myTicket)
-        print(nearby)
         return fields, myTicket, nearby
 
 def parseRule(s):
@@ -36,13 +32,33 @@ if __name__ == "__main__":
   #convert field rules into sets
   allnums = set()
   invalid = []
+  ##part 1
   for f in fields.keys():
       fields[f] = parseRule(fields[f])
       allnums = allnums.union(fields[f])
-  print(f"allnums: {allnums}")
   for n in nearby:
       invalid.extend(set(n).difference(allnums))
-  print(invalid)    
   print(sum(invalid))
-      
+  # part 2
+  print(len(nearby))
+  valid = [n for n in nearby if set(n).issubset(allnums)]
+  print(len(valid))
+  columns = []
+  ks = {}
+  while(fields.keys()):
+    for i in range(len(nearby[0])):
+        ks[i] = []
+        c = [x[i] for x in valid]
+        for k in fields.keys():
+            validrules = [x for x in c if x in fields[k]]
+            if(len(validrules) == len(c)):
+                ks[i].append(k)
+    for d in ks.keys():
+        if(len(ks[d]) == 1):
+            print(f"--->{d}: {ks[d]}")
+            fields.pop(ks[d][0])
+            break
+    
+    #look at std out, manually decode your ticket, because I am lazy
+  
 
