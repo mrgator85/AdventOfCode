@@ -12,21 +12,25 @@ class Card(object):
             except(ValueError):
                 pass
 
+    def checkRow(self, r):
+        #print(r)
+        for v in r:
+            if(v[1] == False):
+                return False
+        return True
     def checkRows(self):
+        
         for r in self.card:
-            for v in r:
-                if(v[1] == False):
-                    return False
-            return True
+            if(self.checkRow(r)):
+                return True
         return False
-
+            
     def checkColumns(self):
         for i in range(5):
-            for v in [n[i] for n in self.card]:
-                if(v[1] == False):
-                    return False
-            return True
+            if(self.checkRow([n[i] for n in self.card])):
+                return True
         return False
+            
 
     def isWinner(self):
         if(self.checkRows()):
@@ -55,20 +59,44 @@ def takeFive(lines):
     return lines[0:5], lines[5:]
 
 
-with open("input_small.txt", "r") as f:
+
+#plays = [1,2,3,4,5,6,7]
+# card_in = ["22 13 17 11  0",
+#            " 3  2 5  4 6",
+#            "21  9 14 16  7",
+#             "6 10  3 18  5",
+#             " 1 12 20 15 19"]
+# card_in = ["22 13 17 3  0",
+#            " 32  22 52  4 62",
+#            "21  9 14 5  7",
+#             "69 10  3 6  53",
+#             " 1 12 20 7 19"]
+# card = Card(card_in)
+# for v in plays:
+#     card.playNumber(v)
+#     print(card.checkColumns())
+# card.print()
+
+with open("input.txt", "r") as f:
     calls = [int(x) for x in f.readline().split(',')]
     lines = [x.strip() for x in f.readlines() if x != '\n']
     cards = []
     while(len(lines) > 0):
         card, lines = takeFive(lines)
         cards.append(Card(card))
+    finished = False
     for v in calls:
-        for c in cards:
-            c.playNumber(v)
-            if(c.isWinner()):
-                print("Winner is Found")
-                print(v * c.sumUnmarked())
-                break
+        if not finished:
+            for c in cards:
+                c.playNumber(v)
+                if(c.isWinner()):
+                    print("Winner is Found")
+                    c.print()
+                    print(v * c.sumUnmarked())
+                    finished = True
+                    break
+        else:
+            break
 
 
     
