@@ -85,18 +85,19 @@ with open("input.txt", "r") as f:
         card, lines = takeFive(lines)
         cards.append(Card(card))
     finished = False
+    
     for v in calls:
-        if not finished:
-            for c in cards:
-                c.playNumber(v)
-                if(c.isWinner()):
-                    print("Winner is Found")
-                    c.print()
-                    print(v * c.sumUnmarked())
-                    finished = True
-                    break
-        else:
-            break
+        print('----')
+        print(v)
+        print(len(cards))
+        cards2 = cards.copy()
+        for c in cards2:
+            c.playNumber(v)
+            if(c.isWinner()):
+                print(v * c.sumUnmarked())
+                c.print()
+                cards.remove(c)
+
 
 
     
