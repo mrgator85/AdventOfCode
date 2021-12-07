@@ -35,14 +35,20 @@ class Grid(object):
         x2 = int(x2s.strip())
         y2 = int(y2s.strip())
         print("{0},{1} -> {2},{3}".format(x1, y1, x2,y2))
-        if(x1==x2):
-            for j in self.range2(y1,y2):
-                self.array[x1][y1+j] = self.array[x1][y1+j] + 1
-        #print("{},{},{}".format(y1, y2, y1==y2))
-        if(y1 == y2):
-            for i in self.range2(x1,x2):
-                self.array[x1+i][y1] = self.array[x1+i][y1] + 1
         
+        if(x1==x2):
+           for j in self.range2(y1,y2):
+               self.array[x1][y1+j] = self.array[x1][y1+j] + 1
+        elif(y1 == y2):
+           for i in self.range2(x1,x2):
+               self.array[x1+i][y1] = self.array[x1+i][y1] + 1
+        else:
+            xvals = self.range2(x1, x2)
+            print(xvals)
+            yvals = self.range2(y1, y2)
+            print(yvals)
+            for i in range(len(xvals)):
+                self.array[x1+xvals[i]][y1+yvals[i]] = self.array[x1+xvals[i]][y1+yvals[i]] + 1
     def printGrid(self):
         for r in self.array:
             print(r)
@@ -52,6 +58,6 @@ with open("input.txt") as f:
     for l in f.readlines():
         grid.drawLine(l.strip())
     
-    #grid.printGrid()
+    grid.printGrid()
 
     print(grid.countGreaterThan(1))
