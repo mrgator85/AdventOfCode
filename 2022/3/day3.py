@@ -13,6 +13,9 @@ def getCharVal(c):
 with open("input.txt", 'r') as f:
     lines = [x.strip() for x in f.readlines()]
     total = 0
+    total2 = 0
+    count = 0
+    sets = []
     for l in lines:
         c1, c2 = splitString(l)
         sc1 = set(c1)
@@ -23,4 +26,16 @@ with open("input.txt", 'r') as f:
         #print(getCharVal(list(v)[0]))
 
         total = total + getCharVal(v.pop())
+        
+
+        sets.append(set(l))
+        count = count + 1
+        if(count == 3):
+            count = 0
+            v = sets[0].intersection(sets[1]).intersection(sets[2])
+            print(v)
+            total2=total2 + getCharVal(v.pop())
+            sets.clear()
+            
+    print(total2)
     print(total)
