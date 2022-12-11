@@ -33,29 +33,35 @@ with open("input.txt") as f:
             currentNode = root
             #print(currentNode)
         elif(l == '$ cd ..'):
+            print("CURRENTDIR: %s" % currentNode.name)
             currentNode = currentNode.parent
         elif(list(l)[0] != '$'):
             #print("ls dir: %s" % l)
             s, n = l.split(' ')
             if(s == 'dir'):
-                print("adding dir %s" % n)
-                if(not search.find_by_attr(root, n, name='name')):
+                if(len(list(filter(lambda node: node.name == n and node.dir, currentNode.children))) < 1):
+                    print("adding dir %s" % n)
                     nodes.append(Element(n, True, parent=currentNode))
             else:
-                if(not search.find_by_attr(root, n, name='name')):
+                if(len(list(filter(lambda node: node.name == n and node.dir, currentNode.children))) < 1):
                     nodes.append(Element(n, False, int(s), parent=currentNode))
         elif('$ cd ' in l): #change directory
-            print("change dir %s" % l)
+            #print("change dir %s" % l)
             n = l.split()[-1]
-            print("changing to %s" % n)
-            currentNode = search.find_by_attr(root, n, name='name')
-            print(currentNode)
+            #print("changing to %s" % n)
+            #printTree(root)
+            #print([x.name for x in currentNode.children])
+            currentNode = list(filter(lambda node: node.name == n and node.dir, currentNode.children))[0]
+            #print(results)
+            #currentNode = search.find(currentNode, filter_=lambda node: node.name==n and node.dir, maxlevel=1)
+            if(not currentNode):
+                print("NODE NOT FOUND: %s" % l)
     for n in nodes:
         n.size = n.calculate_size()
     count = 0
     for n in nodes:
-        if n.children and n.size <100001:
-            count = count + 1
+        if n.dir and n.size <100001:
+            count = count + n.size
     
-    printTree(root)
+    #printTree(root)
     print(count)
