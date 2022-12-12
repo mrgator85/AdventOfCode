@@ -63,5 +63,15 @@ with open("input.txt") as f:
         if n.dir and n.size <100001:
             count = count + n.size
     
+    freespace = 70000000 - root.size
+    print(freespace)
+    needed = 30000000 - freespace
+    print(needed)
+    res = search.findall(root, filter_=lambda node: node.size >= needed and node.dir)
+    for r in res:
+        print(r.name, r.size)
+    sizes = [r.size for r in res]
+    sizes.sort()
+    print(sizes[0])
     #printTree(root)
     print(count)
